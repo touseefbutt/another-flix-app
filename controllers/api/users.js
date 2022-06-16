@@ -1,4 +1,5 @@
 const User = require('../../models/User')
+const bcrypt = require('bcrypt')
 
 const create = async (req, res)=>{
     try{
@@ -20,6 +21,7 @@ const show = async (req, res)=>{
 }
 const update = async (req, res)=>{
     try{
+        req.body.password = await bcrypt.hash(req.body.password, 10)
         const updateUser = await User.findByIdAndUpdate(req.params.id, req.body, {new: true})
         res.status(200).json(updateUser)
     }
