@@ -4,14 +4,19 @@ const app = express()
 require('dotenv').config()
 require('./config/database')
 
+
 // ===== MIDDLEWARE =====
 app.use(express.json())
+app.use(require('./config/checkToken'))
 
 // ===== ROUTES =====
-// Movies
-app.use('/api/v1/movies', require('./routes/api/movies.js'))
 //users
 app.use('/api/v1/users', require('./routes/api/users.js'))
+
+const ensureLoggedin = require('./config/ensureloggedin')
+
+// Movies
+app.use('/api/v1/movies', ensureLoggedin, require('./routes/api/movies.js'))
 
 
 // ===== PORT =====
